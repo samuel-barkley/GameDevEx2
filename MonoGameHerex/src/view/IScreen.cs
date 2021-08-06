@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameHerex.src.view
 {
@@ -10,7 +12,12 @@ namespace MonoGameHerex.src.view
         {
             // TODO: Remove if not needed.
         }
-        public void Draw()
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            
+        }
+
+        public void AddTextures(Dictionary<string, Texture2D> textures)
         {
             
         }

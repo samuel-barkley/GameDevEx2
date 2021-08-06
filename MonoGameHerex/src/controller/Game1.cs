@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameHerex.Handlers;
 using MonoGameHerex.src.view;
-using Texture2D = SharpDX.Direct3D11.Texture2D;
 
 namespace MonoGameHerex
 {
@@ -23,6 +19,10 @@ namespace MonoGameHerex
 
         private KeyboardState _state;
         private KeyboardState _prevState;
+
+        private Texture2D blockTile;
+        
+        private Dictionary<string, Texture2D> textures;
         
         public Game1()
         {
@@ -41,7 +41,15 @@ namespace MonoGameHerex
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Texture2D brick = Content.Load<Texture2D>("Textures/Map/mario_brick");
 
+            textures = new Dictionary<string, Texture2D>();
+            textures.Add("brick", brick);
+
+            foreach (var v in views)
+            {
+                v.AddTextures(textures);
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -78,14 +86,17 @@ namespace MonoGameHerex
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            
+            _spriteBatch.Begin();
             foreach (var v in views)
             {
                 if (v.IsActive)
                 {
-                    v.Draw();
+                    v.Draw(_spriteBatch);
                 }
             }
-
+            _spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }

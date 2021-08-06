@@ -1,12 +1,29 @@
+using Microsoft.Xna.Framework;
+
 namespace MonoGameHerex.src.model
 {
     public class Map
     {
+        public static Point gridCount = new Point(20, 17);
         public TileType[,] mapLayout;
 
         public Map()
         {
-            mapLayout = new TileType[15, 15];
+            mapLayout = new TileType[gridCount.Y, gridCount.X];   // Map is 20 Tiles wide and 17 Tiles high
+            setDefaultMap();
+        }
+
+        private void setDefaultMap()
+        {
+            for (int i = 0; i < mapLayout.GetLength(0); i++)
+            {
+                for (int j = 0; j < mapLayout.GetLength(1); j++)
+                {
+                    mapLayout[i, j] = TileType.Ground;
+                }
+            }
+
+            mapLayout[10, 5] = TileType.Air;
         }
     }
 }

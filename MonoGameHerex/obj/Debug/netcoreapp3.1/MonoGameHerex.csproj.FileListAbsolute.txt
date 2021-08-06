@@ -70,3 +70,4 @@ C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\obj
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\obj\Debug\netcoreapp3.1\MonoGameHerex.dll
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\obj\Debug\netcoreapp3.1\MonoGameHerex.pdb
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\obj\Debug\netcoreapp3.1\MonoGameHerex.genruntimeconfig.cache
+C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\Content\Textures\Map\mario_brick.xnb

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGameHerex.src.model
 {
-    public enum TileType { Coin, Enemy, Start, End, Ground}
+    public enum TileType { Coin, Enemy, Start, End, Ground, Air}
     
     public class Tile
     {

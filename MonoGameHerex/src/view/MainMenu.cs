@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace MonoGameHerex.src.view
@@ -20,9 +22,14 @@ namespace MonoGameHerex.src.view
             // TODO: Possibly remove if not needed.
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch _spriteBatch)
         {
             _graphics.GraphicsDevice.Clear(Color.Green);
+        }
+
+        public void AddTextures(Dictionary<string, Texture2D> textures)
+        {
+            
         }
     }
 }
