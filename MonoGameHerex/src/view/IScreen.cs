@@ -21,5 +21,15 @@ namespace MonoGameHerex.src.view
         {
             
         }
+
+        public void AddLvlData(List<List<string>> mapData)
+        {
+            
+        }
+
+        public void AddPlayer(Character player)
+        {
+            
+        }
     }
 }
