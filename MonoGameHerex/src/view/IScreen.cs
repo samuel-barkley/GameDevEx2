@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameHerex.src.model;
 
 namespace MonoGameHerex.src.view
 {
@@ -22,7 +23,7 @@ namespace MonoGameHerex.src.view
             
         }
 
-        public void AddLvlData(List<List<string>> mapData)
+        public void AddLvlData(List<List<string>> mapData, Map map)
         {
             
         }

@@ -23,7 +23,7 @@ namespace MonoGameHerex
             
         }
         
-        public virtual void Update(KeyboardState state, KeyboardState prevState)
+        public virtual void Update(GameTime gameTime, KeyboardState state, KeyboardState prevState)
         {
             
         }

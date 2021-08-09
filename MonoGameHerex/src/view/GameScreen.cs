@@ -9,6 +9,7 @@ namespace MonoGameHerex.src.view
 {
     public class GameScreen : IScreen
     {
+        public static int GridSize;
         public bool IsActive { get; set; } = true;
         private GraphicsDeviceManager _graphics;
         private Dictionary<string, Texture2D> _textures;
@@ -22,6 +23,7 @@ namespace MonoGameHerex.src.view
         {
             _graphics = graphics;
             gridSize = GraphicsDeviceManager.DefaultBackBufferHeight / Map.gridCount.Y;
+            GridSize = gridSize;
             SetLvl(0);
         }
 
@@ -63,10 +65,11 @@ namespace MonoGameHerex.src.view
             _textures = textures;
         }
 
-        public void AddLvlData(List<List<string>> mapData)
+        public void AddLvlData(List<List<string>> mapData, Map map)
         {
             _mapDataString = mapData;
-            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0]); // Currently only one map load in.
+            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0], _map); // TODO: Currently only one map load in.
+            _map.addTiles(); // Notifies map to make list of tiles for collision detection.
         }
 
         public void SetLvl(int id)

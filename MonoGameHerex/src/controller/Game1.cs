@@ -27,6 +27,7 @@ namespace MonoGameHerex
         private KeyboardState _prevState;
 
         private Player player;
+        private Map map;
         
         private Dictionary<string, Texture2D> textures;
         
@@ -40,7 +41,8 @@ namespace MonoGameHerex
         protected override void Initialize()
         {
             views = new List<IScreen> {new GameScreen(_graphics), new MainMenu(_graphics)};
-            _switchScreenHelper = new SwitchScreenHelper(views); 
+            _switchScreenHelper = new SwitchScreenHelper(views);
+            map = new Map();
             base.Initialize();
         }
 
@@ -71,7 +73,7 @@ namespace MonoGameHerex
             foreach (var v in views)
             {
                 v.AddTextures(textures);
-                v.AddLvlData(mapData);
+                v.AddLvlData(mapData, map);
             }
         }
 
@@ -91,7 +93,7 @@ namespace MonoGameHerex
 
             if (views[0].IsActive)
             {
-                UpdateGameplay();
+                UpdateGameplay(gameTime);
             }
             else if (views[1].IsActive)
             {
@@ -158,7 +160,7 @@ namespace MonoGameHerex
             return mapGrids;
         }
 
-        private void UpdateGameplay()
+        private void UpdateGameplay(GameTime gameTime)
         {
             if (player == null)
             {
@@ -166,7 +168,7 @@ namespace MonoGameHerex
                 views[0].AddPlayer(player);
             }
             
-            player.Update(_state, _prevState);
+            player.Update(gameTime, _state, _prevState);
         }
 
         private void UpdateMenu()

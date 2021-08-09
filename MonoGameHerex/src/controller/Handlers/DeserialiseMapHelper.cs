@@ -7,9 +7,9 @@ namespace MonoGameHerex.Handlers
 {
     public static class DeserialiseMapHelper
     {
-        public static Map DeserialiseMap(List<string> mapData)
+        public static Map DeserialiseMap(List<string> mapData, Map resultMap)
         {
-            Map resultMap = new Map();
+            //Map resultMap = new Map();
             for (int i = 0; i < mapData.Count; i++)
             {
                 for (int j = 0; j < mapData[i].Length; j++)
