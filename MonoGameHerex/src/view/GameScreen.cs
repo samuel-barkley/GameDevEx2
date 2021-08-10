@@ -68,14 +68,14 @@ namespace MonoGameHerex.src.view
         public void AddLvlData(List<List<string>> mapData, Map map)
         {
             _mapDataString = mapData;
-            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0], _map); // TODO: Currently only one map load in.
+            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0], map); // TODO: Currently only one map load in.
             _map.addTiles(); // Notifies map to make list of tiles for collision detection.
         }
 
         public void SetLvl(int id)
         {
             _currentLvl = id;
-            _map = new Map(); // Todo: no need to instantiate new map here I think.
+            //_map = new Map(); // Todo: no need to instantiate new map here I think.
         }
 
         public void AddPlayer(Character player)

@@ -34,7 +34,7 @@ namespace MonoGameHerex.src.model
             {
                 for (int j = 0; j < mapLayout.GetLength(1); j++)
                 {
-                    tiles.Add(new Tile(new Point(i, j), TileType.Ground));
+                    tiles.Add(new Tile(new Point(j, i), TileType.Ground));
                 }
             }
         }

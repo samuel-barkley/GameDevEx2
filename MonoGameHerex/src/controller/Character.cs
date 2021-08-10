@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoGameHerex.src.view;
 
 namespace MonoGameHerex
 {
@@ -15,6 +16,18 @@ namespace MonoGameHerex
             private set
             {
                 pos = Pos;
+            }
+        }
+
+        protected Vector2 absPos
+        {
+            get
+            {
+                return pos * GameScreen.GridSize;
+            }
+            set
+            {
+                pos = value / GameScreen.GridSize;
             }
         }
 

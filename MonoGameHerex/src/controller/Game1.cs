@@ -164,7 +164,7 @@ namespace MonoGameHerex
         {
             if (player == null)
             {
-                player = new Player();
+                player = new Player(map);
                 views[0].AddPlayer(player);
             }
             

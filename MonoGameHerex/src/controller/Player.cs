@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameHerex.src.model;
+using MonoGameHerex.src.view;
 using Vector2 = SharpDX.Vector2;
 
 namespace MonoGameHerex
@@ -19,9 +20,14 @@ namespace MonoGameHerex
         private Vector2 vel = new Vector2(0f , 0f);
         private float velScaler = 100.0f;
 
-        public Player(/*Map map*/) : base()
+        private int temp = 0;
+
+        private Rectangle collisionRect;
+
+        public Player(Map map) : base()
         {
-            /*_map = map;*/
+            _map = map;
+            collisionRect = new Rectangle((int) Pos.X, (int) Pos.Y, GameScreen.GridSize, GameScreen.GridSize); // Todo: Move rectangle to match sprite
         }
 
         public override void Update(GameTime gameTime, KeyboardState state, KeyboardState prevState)
@@ -32,6 +38,10 @@ namespace MonoGameHerex
 
             HandleInputState();
             HandleMovement();
+
+            collisionRect.X = (int) Pos.X;
+            collisionRect.Y = (int) Pos.Y;
+            
             HandleGravity();
         }
 
@@ -57,7 +67,7 @@ namespace MonoGameHerex
             if (vel.X != 0)
             {
                 pos.X += vel.X / velScaler;
-                Debug.WriteLine("Pos.X: " + Pos.X + " pos.X: " + pos.X + " vel.x: " + vel.X);
+                //Debug.WriteLine("Pos.X: " + Pos.X + " pos.X: " + pos.X + " vel.x: " + vel.X);
             }
         }
 
@@ -72,17 +82,39 @@ namespace MonoGameHerex
             }
             else if (vel.Y < maxVel)
             {
-                vel.Y += (g * (_gameTime.ElapsedGameTime.Milliseconds / 1000.0f));
+                vel.Y += g * (_gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             }
 
             HandleGravityCollision();
-            
+            //Debug.WriteLine(vel.Y);
             pos.Y += vel.Y / velScaler;
         }
 
         private void HandleGravityCollision()
         {
-            
+            if (temp == 0)
+            {
+
+
+                foreach (var tile in _map.tiles)
+                {
+                    if (tile.CollisionRect.Left <= Pos.X * GameScreen.GridSize &&
+                        tile.CollisionRect.Right > Pos.X * GameScreen.GridSize)
+                    {
+                        Debug.WriteLine("Player X: " + Pos.X + ", tile Left: " + tile.CollisionRect.Left +
+                                        ", tile Right: " + tile.CollisionRect.Right + ", tile Top: " + tile.CollisionRect.Top + ", tile Type: " + tile.Type);
+                    }
+
+                    /*
+                     * What I was about to do:
+                     * I was about to make an algorithm to decide which tile is under your feet and check if you are
+                     * colliding with that tile. After that I was going to figure out horizontal collisions and ceilings 
+                     */
+
+                }
+
+                temp++;
+            }
         }
     }
 }
