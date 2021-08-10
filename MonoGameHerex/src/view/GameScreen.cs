@@ -56,7 +56,7 @@ namespace MonoGameHerex.src.view
             
             // Draw Player
             if (_player != null)
-                _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2), (int) (_player.Pos.Y * gridSize - gridSize + 100), gridSize, gridSize), Color.White);
+                _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2), (int) (_player.Pos.Y * gridSize - gridSize), gridSize, gridSize), Color.White);
             
         }
 
