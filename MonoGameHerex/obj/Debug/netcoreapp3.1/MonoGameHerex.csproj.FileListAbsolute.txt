@@ -79,3 +79,5 @@ C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\Content\Textures\Characters\Player\Walk0.xnb
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\Content\Textures\Characters\Player\Walk1.xnb
 C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\Content\Textures\Characters\Player\Walk2.xnb
+C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\MonoGame.Extended.dll
+C:\Users\samue\Documents\AP\Year 2\Sem 1\GameDev\MonoGameHerex\MonoGameHerex\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

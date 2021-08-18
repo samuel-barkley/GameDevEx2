@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mIPoeACUFZpU8g1j8/JU6tt/V3LbEQlHOFDeGpGBHdxABTPVZBOme5KRvAIcwciZ/6Dgd6aE56RVCB9IDNCd7A==",
+  "dgSpecHash": "pi6CE/2yfVQsr8qwsZDeT7y6/sCeI6Wv+3wiLJNWSiyB5ZNv3nm6UJSexiTbpd+yR6+0Be9A3uIn8WlHgGA1NA==",
   "success": true,
   "projectFilePath": "C:\\Users\\samue\\Documents\\AP\\Year 2\\Sem 1\\GameDev\\MonoGameHerex\\MonoGameHerex\\MonoGameHerex.csproj",
   "expectedPackageFiles": [
@@ -23,8 +23,10 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.win32.primitives\\4.0.1\\microsoft.win32.primitives.4.0.1.nupkg.sha512",
     "C:\\Users\\samue\\.nuget\\packages\\microsoft.win32.registry\\4.0.0\\microsoft.win32.registry.4.0.0.nupkg.sha512",
     "C:\\Users\\samue\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
+    "C:\\Users\\samue\\.nuget\\packages\\monogame.extended\\3.8.0\\monogame.extended.3.8.0.nupkg.sha512",
     "C:\\Users\\samue\\.nuget\\packages\\monogame.framework.windowsdx\\3.8.0.1641\\monogame.framework.windowsdx.3.8.0.1641.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\1.6.0\\netstandard.library.1.6.0.nupkg.sha512",
+    "C:\\Users\\samue\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.native.system\\4.0.0\\runtime.native.system.4.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.native.system.io.compression\\4.1.0\\runtime.native.system.io.compression.4.1.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.native.system.net.http\\4.0.1\\runtime.native.system.net.http.4.0.1.nupkg.sha512",

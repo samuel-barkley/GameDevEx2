@@ -1,17 +1,20 @@
 using System;
-using System.Buffers.Text;
-using System.Data;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameHerex.src.model;
 using MonoGameHerex.src.view;
-using Vector2 = SharpDX.Vector2;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace MonoGameHerex
 {
     public class Player : Character
     {
+        private bool isJump;
+        private bool onGround;
+        private float jumpForce = -20.0f;
+        
         private KeyboardState _state;
         private KeyboardState _prevState;
         private GameTime _gameTime;
@@ -26,6 +29,7 @@ namespace MonoGameHerex
 
         public Player(Map map) : base()
         {
+            pos = new Vector2(0.2f, 0.0f);
             _map = map;
             collisionRect = new Rectangle((int) Pos.X, (int) Pos.Y, GameScreen.GridSize, GameScreen.GridSize); // Todo: Move rectangle to match sprite
         }
@@ -47,6 +51,11 @@ namespace MonoGameHerex
 
         private void HandleInputState()
         {
+            if (_state.IsKeyDown(Keys.Space))
+            {
+                isJump = true;
+            }
+            
             if (_state.IsKeyDown(Keys.D) || _state.IsKeyDown(Keys.Right))
             {
                 vel.X = 10.0f;
@@ -67,14 +76,19 @@ namespace MonoGameHerex
             if (vel.X != 0)
             {
                 pos.X += vel.X / velScaler;
-                //Debug.WriteLine("Pos.X: " + Pos.X + " pos.X: " + pos.X + " vel.x: " + vel.X);
+            }
+
+            if (isJump && onGround)
+            {
+                vel.Y = jumpForce;
+                pos.Y -= 0.2f;
             }
         }
 
         private void HandleGravity()
         {
-            float g = 9.81f;
-            float maxVel = 40.0f;
+            float g = 30f;
+            float maxVel = 50.0f;
 
             if (vel.Y + g > maxVel)
             {
@@ -92,28 +106,56 @@ namespace MonoGameHerex
 
         private void HandleGravityCollision()
         {
+            double spriteOffset = 2;
+            List<Tile> tiles = new List<Tile>();
+
+            bool foundCollision = false;
             if (temp == 0)
             {
-
-
                 foreach (var tile in _map.tiles)
                 {
                     if (tile.CollisionRect.Left <= Pos.X * GameScreen.GridSize &&
                         tile.CollisionRect.Right > Pos.X * GameScreen.GridSize)
                     {
-                        Debug.WriteLine("Player X: " + Pos.X + ", tile Left: " + tile.CollisionRect.Left +
-                                        ", tile Right: " + tile.CollisionRect.Right + ", tile Top: " + tile.CollisionRect.Top + ", tile Type: " + tile.Type);
+                        if (tile.CollisionRect.Bottom > Pos.Y * GameScreen.GridSize && tile.Type == TileType.Ground)
+                        {
+                            if (tile.CollisionRect.Top <= Pos.Y * GameScreen.GridSize + spriteOffset)
+                            {
+                                if (!isJump)
+                                {
+                                    foundCollision = true;
+                                    if (vel.Y >= 0.0f)
+                                    {
+                                        onGround = true;
+                                    }
+                                    onGround = true;
+                                    vel.Y = 0.0f;
+                                    pos.Y = tile.CollisionRect.Y / GameScreen.GridSize;
+                                }
+                            }
+                            else if (tile.CollisionRect.Top < Pos.Y * GameScreen.GridSize + GameScreen.GridSize / 2)
+                            {
+                                onGround = false;
+                            }
+                            
+                            tiles.Add(tile);
+                        }
                     }
-
-                    /*
-                     * What I was about to do:
-                     * I was about to make an algorithm to decide which tile is under your feet and check if you are
-                     * colliding with that tile. After that I was going to figure out horizontal collisions and ceilings 
-                     */
-
                 }
+/*
+                if (foundCollision)
+                {
+                    if (vel.Y >= 0.0f)
+                    {
+                        onGround = true;
+                    }
+                    vel.Y = 0.0f;
+                }*/
+            }
 
-                temp++;
+            if (isJump)
+            {
+                isJump = false;
             }
         }
     }

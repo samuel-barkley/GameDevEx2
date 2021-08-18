@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameHerex.Handlers;
 using MonoGameHerex.src.model;
+using MonoGame.Extended;
 
 namespace MonoGameHerex.src.view
 {

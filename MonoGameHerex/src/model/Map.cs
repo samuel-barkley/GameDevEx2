@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoGameHerex.src.view;
 
 namespace MonoGameHerex.src.model
 {
@@ -34,7 +35,7 @@ namespace MonoGameHerex.src.model
             {
                 for (int j = 0; j < mapLayout.GetLength(1); j++)
                 {
-                    tiles.Add(new Tile(new Point(j, i), mapLayout[i, j]));
+                    tiles.Add(new Tile(new Point(j * GameScreen.GridSize, i * GameScreen.GridSize), mapLayout[i, j]));
                 }
             }
         }

@@ -9,6 +9,7 @@
       "MonoGameHerex/1.0.0": {
         "dependencies": {
           "MonoGame.Content.Builder.Task": "3.8.0.1641",
+          "MonoGame.Extended": "3.8.0",
           "MonoGame.Framework.WindowsDX": "3.8.0.1641"
         },
         "runtime": {
@@ -269,6 +270,17 @@
         }
       },
       "MonoGame.Content.Builder.Task/3.8.0.1641": {},
+      "MonoGame.Extended/3.8.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoGame.Extended.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "MonoGame.Framework.WindowsDX/3.8.0.1641": {
         "dependencies": {
           "SharpDX": "4.0.1",
@@ -332,6 +344,14 @@
           "System.Threading.Timer": "4.0.1",
           "System.Xml.ReaderWriter": "4.0.11",
           "System.Xml.XDocument": "4.0.11"
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
         }
       },
       "runtime.native.System/4.0.0": {
@@ -1622,6 +1642,13 @@
       "path": "monogame.content.builder.task/3.8.0.1641",
       "hashPath": "monogame.content.builder.task.3.8.0.1641.nupkg.sha512"
     },
+    "MonoGame.Extended/3.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FDPoUOFtslGNHCWSqjKD0C67RYN6Stb6NWnn+rkCmtkPBZlE6LvwuGyQBkHUkAMANO3LzO/Wsz9etMhwZLInqg==",
+      "path": "monogame.extended/3.8.0",
+      "hashPath": "monogame.extended.3.8.0.nupkg.sha512"
+    },
     "MonoGame.Framework.WindowsDX/3.8.0.1641": {
       "type": "package",
       "serviceable": true,
@@ -1635,6 +1662,13 @@
       "sha512": "sha512-ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
       "path": "netstandard.library/1.6.0",
       "hashPath": "netstandard.library.1.6.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "runtime.native.System/4.0.0": {
       "type": "package",
