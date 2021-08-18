@@ -87,20 +87,20 @@ namespace MonoGameHerex
 
         private void HandleGravity()
         {
-            float g = 30f;
+            float g = 40f;
             float maxVel = 50.0f;
 
             if (vel.Y + g > maxVel)
             {
                 vel.Y = maxVel;
             }
-            else if (vel.Y < maxVel)
+            else if (vel.Y + g < maxVel)
             {
                 vel.Y += g * (_gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             }
 
             HandleGravityCollision();
-            //Debug.WriteLine(vel.Y);
+            
             pos.Y += vel.Y / velScaler;
         }
 
@@ -109,7 +109,6 @@ namespace MonoGameHerex
             double spriteOffset = 2;
             List<Tile> tiles = new List<Tile>();
 
-            bool foundCollision = false;
             if (temp == 0)
             {
                 foreach (var tile in _map.tiles)
@@ -123,17 +122,22 @@ namespace MonoGameHerex
                             {
                                 if (!isJump)
                                 {
-                                    foundCollision = true;
                                     if (vel.Y >= 0.0f)
                                     {
                                         onGround = true;
                                     }
                                     onGround = true;
                                     vel.Y = 0.0f;
-                                    pos.Y = tile.CollisionRect.Y / GameScreen.GridSize;
+                                    pos.Y = (float) tile.CollisionRect.Y / GameScreen.GridSize;
+                                }
+
+                                if (!isJump && _state.IsKeyDown(Keys.Space))
+                                {
+                                    vel.Y = 0.0f;
+                                    pos.Y = (float) tile.CollisionRect.Y / GameScreen.GridSize;
                                 }
                             }
-                            else if (tile.CollisionRect.Top < Pos.Y * GameScreen.GridSize + GameScreen.GridSize / 2)
+                            else if (tile.CollisionRect.Top < Pos.Y * GameScreen.GridSize + GameScreen.GridSize / 2.0f)
                             {
                                 onGround = false;
                             }
@@ -142,15 +146,6 @@ namespace MonoGameHerex
                         }
                     }
                 }
-/*
-                if (foundCollision)
-                {
-                    if (vel.Y >= 0.0f)
-                    {
-                        onGround = true;
-                    }
-                    vel.Y = 0.0f;
-                }*/
             }
 
             if (isJump)
