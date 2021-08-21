@@ -36,10 +36,13 @@ namespace MonoGameHerex
         private bool toJump;
 
         private bool stopJump;
+        
+        private bool hasbeennotnull;
+        private int timesnotnull;
 
         public Player(Map map)
         {
-            pos = new Vector2(2.2f, 2.0f);
+            pos = new Vector2(2.5f, 2.0f);
             _map = map;
             collisionRect = new Rectangle((int) Pos.X, (int) Pos.Y, GameScreen.GridSize, GameScreen.GridSize); // Todo: Move rectangle to match sprite
             posToAdd = new Vector2();
@@ -145,54 +148,40 @@ namespace MonoGameHerex
         private void HandleCollisions()
         {
             double spriteOffset = 2;
-
+/*
             Tile aboveTile = null;
             Tile rightTile = null;
             Tile bottomTile = null;
             Tile leftTile = null;
-
-            foreach (var tile in _map.tiles)
+*/
+            Dictionary<string, Tile> neighbours = new Dictionary<string, Tile>
             {
-                if (tile.CollisionRect.Right < (Pos.X * GameScreen.GridSize) + GameScreen.GridSize && tile.CollisionRect.Left > (Pos.X * GameScreen.GridSize) - GameScreen.GridSize)
-                {
-                    if (tile.CollisionRect.Bottom < (Pos.X * GameScreen.GridSize) + GameScreen.GridSize && tile.CollisionRect.Bottom > Pos.Y + 2 * GameScreen.GridSize)
-                    {
-                        // Gets top tile
-                        aboveTile = tile;
-                    }
-                    
-                    if (tile.CollisionRect.Top > Pos.Y * GameScreen.GridSize && tile.CollisionRect.Top < (Pos.Y * GameScreen.GridSize) + GameScreen.GridSize )
-                    {
-                        // Gets bottom tile
-                        bottomTile = tile;
-                    }
-                }
+                {"up", null}, {"right", null}, {"down", null}, {"left", null}
+            };
 
-                if (tile.CollisionRect.Bottom >= (Pos.Y * GameScreen.GridSize) /*- GameScreen.GridSize*/ && tile.CollisionRect.Bottom <= Pos.Y * GameScreen.GridSize + GameScreen.GridSize)
-                {
-                    if (tile.CollisionRect.Right <= (Pos.X * GameScreen.GridSize) /*- GameScreen.GridSize */ /*/ 2.0f*/ && tile.CollisionRect.Right > (Pos.X * GameScreen.GridSize) - GameScreen.GridSize /* 1.5f*/)
-                    {
-                        // Gets Left tile
-                        leftTile = tile;
-                    }
+            CheckNeighbouringTiles(neighbours);
 
-                    if (tile.CollisionRect.Left >= (Pos.X * GameScreen.GridSize) + GameScreen.GridSize / 2.0f && tile.CollisionRect.Left < (Pos.X * GameScreen.GridSize) + GameScreen.GridSize)
-                    {
-                        // Gets right tile
-                        rightTile = tile;
-                    }
-                }
-            }
             
-            if (aboveTile != null && bottomTile != null && leftTile != null && rightTile != null)
-            {
-                { }
-            }
 
             if (Pos.Y > 4)
             {
                 { } // Todo: Remove when I don't want the Debug selected tiles
             }
+            
+            // Checks if colliding with floor.
+            if (neighbours["up"] != null && neighbours["down"] != null)
+            {
+                if (neighbours["down"].Type == TileType.Ground)
+                {
+                    if (neighbours["down"].CollisionRect.Top - (Pos.Y * GameScreen.GridSize) < GameScreen.GridSize)
+                    {
+                        pos.Y = (neighbours["down"].CollisionRect.Top / (float) GameScreen.GridSize) - 0.05f;
+                        vel.Y = 0.0f;
+                        onGround = true;
+                    }
+                }
+            }
+
 
             /* old collision detection
             List<Tile> tiles = new List<Tile>();
@@ -241,6 +230,49 @@ namespace MonoGameHerex
                 isJump = false;
             }
             */
+        }
+
+        private void CheckNeighbouringTiles(Dictionary<string, Tile> neighbours)
+        {
+            foreach (var tile in _map.tiles)
+            {
+                // Only lets tile through that are above and below the player
+                if (tile.CollisionRect.Right <= (Pos.X * GameScreen.GridSize) + GameScreen.GridSize + 5 && tile.CollisionRect.Left > (Pos.X * GameScreen.GridSize) - GameScreen.GridSize - 5)
+                {
+                    // First part of the statement lets all tiles through that are above the pos of the player. The second part lets the tiles through that are max 1 gridspace away from the pos.
+                    if (tile.CollisionRect.Bottom < (Pos.Y * GameScreen.GridSize) /*uncomment to add head collision + GameScreen.GridSize*/ && tile.CollisionRect.Bottom > Pos.Y - GameScreen.GridSize /*Add another gridsize to add headcollision*/)
+                    {
+                        // Gets top tile
+                        neighbours["up"] = tile;
+                    }
+                    // First part of the statement lets all tiles through that are below the pos of the player. The second part lets the tiles through that are max 1 gridspace away from the pos.
+                    if (tile.CollisionRect.Top >= Pos.Y * GameScreen.GridSize - 5 && tile.CollisionRect.Top < (Pos.Y * GameScreen.GridSize) + GameScreen.GridSize + 5)
+                    {
+                        // Gets bottom tile
+                        neighbours["down"] = tile;
+                    }
+                }
+
+                /*  Let's all tiles pass where the bottom of the tile is below the top of the player.
+                 *  &&
+                 *  Let's all tiles pass where the bottom of the tile is above the bottom of the player.
+                 */
+                if (tile.CollisionRect.Bottom >= (Pos.Y * GameScreen.GridSize) - GameScreen.GridSize && tile.CollisionRect.Bottom <= Pos.Y * GameScreen.GridSize)
+                {
+                    // First part of the statement lets all tiles through that are to the left of the center pos of the player. The second part lets the tiles through that are max 1 gridSpace away from the center point of the player.
+                    if (tile.CollisionRect.Right <= (Pos.X * GameScreen.GridSize) /*- GameScreen.GridSize */ /*/ 2.0f*/ && tile.CollisionRect.Right > (Pos.X * GameScreen.GridSize) - GameScreen.GridSize /* 1.5f*/)
+                    {
+                        // Gets Left tile
+                        neighbours["left"] = tile;
+                    }
+                    // First part of the statement lets all tiles through that are to the right of the center pos of the player. The second part lets the tiles through that are max 1 gridSpace away from the center point of the player.
+                    if (tile.CollisionRect.Left >= (Pos.X * GameScreen.GridSize) /*+ GameScreen.GridSize / 2.0f*/ && tile.CollisionRect.Left < (Pos.X * GameScreen.GridSize) + GameScreen.GridSize)
+                    {
+                        // Gets right tile
+                        neighbours["right"] = tile;
+                    }
+                }
+            }
         }
 
         private void applyPosUpdates()
