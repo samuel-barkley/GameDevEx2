@@ -59,6 +59,7 @@ namespace MonoGameHerex.src.view
             if (_player != null)
                 _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2), (int) (_player.Pos.Y * gridSize - gridSize), gridSize, gridSize), Color.White);
             
+            DrawGrid(_spriteBatch);
         }
 
         public void AddTextures(Dictionary<string, Texture2D> textures)
@@ -82,6 +83,17 @@ namespace MonoGameHerex.src.view
         public void AddPlayer(Character player)
         {
             _player = player;
+        }
+
+        private void DrawGrid(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < _map.mapLayout.GetLength(0); i++)
+            {
+                for (int j = 0; j < _map.mapLayout.GetLength(1); j++)
+                {
+                    spriteBatch.DrawRectangle(new Rectangle(j * GridSize, i * GridSize, GridSize, GridSize), Color.Black);
+                }
+            }
         }
     }
 }
