@@ -223,55 +223,6 @@ namespace MonoGameHerex
                     // Todo: Remove when don't need to debug anymore.
                 }
             }
-
-            // Todo: Remove when finishing up game.
-            /* old collision detection
-            List<Tile> tiles = new List<Tile>();
-
-            if (temp == 0)
-            {
-                foreach (var tile in _map.tiles)
-                {
-                    if (tile.CollisionRect.Left <= Pos.X * GameScreen.GridSize &&
-                        tile.CollisionRect.Right > Pos.X * GameScreen.GridSize)
-                    {
-                        if (tile.CollisionRect.Bottom > Pos.Y * GameScreen.GridSize && tile.Type == TileType.Ground)
-                        {
-                            if (tile.CollisionRect.Top <= Pos.Y * GameScreen.GridSize + spriteOffset)
-                            {
-                                if (!isJump)
-                                {
-                                    if (vel.Y >= 0.0f)
-                                    {
-                                        onGround = true;
-                                    }
-                                    onGround = true;
-                                    vel.Y = 0.0f;
-                                    pos.Y = (float) tile.CollisionRect.Y / GameScreen.GridSize;
-                                }
-
-                                if (!isJump && _state.IsKeyDown(Keys.Space))
-                                {
-                                    vel.Y = 0.0f;
-                                    pos.Y = (float) tile.CollisionRect.Y / GameScreen.GridSize;
-                                }
-                            }
-                            else if (tile.CollisionRect.Top < Pos.Y * GameScreen.GridSize + GameScreen.GridSize / 2.0f)
-                            {
-                                onGround = false;
-                            }
-                            
-                            tiles.Add(tile);
-                        }
-                    }
-                }
-            }
-            
-            if (isJump)
-            {
-                isJump = false;
-            }
-            */
         }
 
         private void CheckNeighbouringTiles(Dictionary<string, Tile> neighbours)
