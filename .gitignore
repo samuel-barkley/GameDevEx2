@@ -528,3 +528,5 @@ monodroid*.msi
 /CompiledContent/Windows/IgnoreMe.dll
 *.cachefile
 *.dll
+
+MonoGameHerex/bin/Debug/netcoreapp3.1/MonoGameHerex.runtimeconfig.dev.json
