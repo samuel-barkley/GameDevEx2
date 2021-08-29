@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -15,7 +16,7 @@ namespace MonoGameHerex
     {
         private bool isJump;
         private bool onGround;
-        private float jumpForce = -20.0f;
+        private float jumpForce = -50.0f;
         
         private KeyboardState _state;
         private KeyboardState _prevState;
@@ -23,7 +24,7 @@ namespace MonoGameHerex
         private Map _map;
 
         private Vector2 vel = new Vector2(0f , 0f);
-        private float velScaler = 100.0f;
+        private float velScaler = 500.0f;
 
         private int temp = 0;
 
@@ -40,8 +41,13 @@ namespace MonoGameHerex
         private bool hasbeennotnull;
         private int timesnotnull;
 
+        private int bottomHits;
+        private List<Tile> bottomsHit;
+
         public Player(Map map)
         {
+            bottomsHit = new List<Tile>();
+            
             pos = new Vector2(2.5f, 2.0f);
             _map = map;
             collisionRect = new Rectangle((int) Pos.X, (int) Pos.Y, GameScreen.GridSize, GameScreen.GridSize); // Todo: Move rectangle to match sprite
@@ -120,18 +126,18 @@ namespace MonoGameHerex
             
 
             // Debug.WriteLine("toMoveLeft: " + toMoveLeft + ", toMoveRight: " + toMoveRight);
-            /*
-            if (isJump && onGround)
+            // Debug.WriteLine("IsJump: " + toJump + ", onGround: " + onGround);
+            if (toJump && onGround)
             {
                 vel.Y = jumpForce;
                 pos.Y -= 0.2f;
-            }*/
+            }
         }
 
         private void HandleGravity()
         {
-            float g = 40f;
-            float maxVel = 50.0f;
+            float g = 70f;
+            float maxVel = 150.0f;
 
             if (vel.Y + g > maxVel)
             {
@@ -141,19 +147,12 @@ namespace MonoGameHerex
             {
                 vel.Y += g * (_gameTime.ElapsedGameTime.Milliseconds / 1000.0f);
             }
-            
-            //Debug.WriteLine(pos.X + ", " + pos.Y);
         }
 
         private void HandleCollisions()
         {
             double spriteOffset = 2;
-/*
-            Tile aboveTile = null;
-            Tile rightTile = null;
-            Tile bottomTile = null;
-            Tile leftTile = null;
-*/
+
             Dictionary<string, Tile> neighbours = new Dictionary<string, Tile>
             {
                 {"up", null}, {"right", null}, {"down", null}, {"left", null}
@@ -162,27 +161,70 @@ namespace MonoGameHerex
             CheckNeighbouringTiles(neighbours);
 
             
-
-            if (Pos.Y > 4)
-            {
-                { } // Todo: Remove when I don't want the Debug selected tiles
-            }
-            
-            // Checks if colliding with floor.
             if (neighbours["up"] != null && neighbours["down"] != null)
             {
+                // Checks if colliding with floor.
                 if (neighbours["down"].Type == TileType.Ground)
                 {
-                    if (neighbours["down"].CollisionRect.Top - (Pos.Y * GameScreen.GridSize) < GameScreen.GridSize)
+                    if (neighbours["down"].CollisionRect.Top - (Pos.Y * GameScreen.GridSize) < (vel.Y / velScaler) * GameScreen.GridSize)
                     {
-                        pos.Y = (neighbours["down"].CollisionRect.Top / (float) GameScreen.GridSize) - 0.05f;
+                        pos.Y = neighbours["down"].CollisionRect.Top / (float) GameScreen.GridSize;
                         vel.Y = 0.0f;
                         onGround = true;
+                    }
+                    else
+                    {
+                        onGround = false;
+                    }
+                }
+                else
+                {
+                    onGround = false;
+                }
+                
+                // Checks if colliding with ceiling.
+                if (neighbours["up"].Type == TileType.Ground)
+                {
+                    if ((Pos.Y * GameScreen.GridSize - GameScreen.GridSize + 1) - neighbours["up"].CollisionRect.Bottom < (vel.Y / velScaler) * GameScreen.GridSize)
+                    {
+                        pos.Y = (float)(neighbours["down"].CollisionRect.Bottom - GameScreen.GridSize) / GameScreen.GridSize;
+                        vel.Y = 0.0f;
+                        
                     }
                 }
             }
 
+            if (neighbours["left"] != null && neighbours["right"] != null)
+            {
+                // Checks if colliding with wall left
+                if (neighbours["left"].Type == TileType.Ground)
+                {
+                    if (neighbours["left"].CollisionRect.Right > Pos.X * GameScreen.GridSize - (float) GameScreen.GridSize / 2)
+                    {
+                        vel.X = 0;
+                        pos.X = (float) (neighbours["left"].CollisionRect.Right + GameScreen.GridSize / 2 + 2) / GameScreen.GridSize;
+                    }
+                }
+                
+                // Checks if colliding with wall right
+                if (neighbours["right"].Type == TileType.Ground)
+                {
+                    if (neighbours["right"].CollisionRect.Left < Pos.X * GameScreen.GridSize + (float) GameScreen.GridSize / 2)
+                    {
+                        vel.X = 0;
+                        pos.X = (float) (neighbours["right"].CollisionRect.Left - GameScreen.GridSize / 2 - 2) / GameScreen.GridSize;
+                    }
+                }
+            }
 
+            if (Pos.Y * GameScreen.GridSize >=385)
+            {
+                {
+                    // Todo: Remove when don't need to debug anymore.
+                }
+            }
+
+            // Todo: Remove when finishing up game.
             /* old collision detection
             List<Tile> tiles = new List<Tile>();
 
@@ -246,7 +288,7 @@ namespace MonoGameHerex
                         neighbours["up"] = tile;
                     }
                     // First part of the statement lets all tiles through that are below the pos of the player. The second part lets the tiles through that are max 1 gridspace away from the pos.
-                    if (tile.CollisionRect.Top >= Pos.Y * GameScreen.GridSize - 5 && tile.CollisionRect.Top < (Pos.Y * GameScreen.GridSize) + GameScreen.GridSize + 5)
+                    if (tile.CollisionRect.Top >= Pos.Y * GameScreen.GridSize - 5 && tile.CollisionRect.Top < (Pos.Y * GameScreen.GridSize) + GameScreen.GridSize)
                     {
                         // Gets bottom tile
                         neighbours["down"] = tile;
@@ -277,7 +319,7 @@ namespace MonoGameHerex
 
         private void applyPosUpdates()
         {
-            float velScaler = 500.0f;
+            
             pos.X += vel.X / velScaler;
             pos.Y += vel.Y / velScaler;
         }
