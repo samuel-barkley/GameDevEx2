@@ -349,7 +349,6 @@ namespace MonoGameHerex
 
         private void applyPosUpdates()
         {
-            
             pos.X += vel.X / velScaler;
             pos.Y += vel.Y / velScaler;
         }

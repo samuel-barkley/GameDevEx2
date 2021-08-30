@@ -9,17 +9,12 @@ namespace MonoGameHerex.src.view
 {
     public class MainMenu : IScreen
     {
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = false;
         private GraphicsDeviceManager _graphics;
 
         public MainMenu(GraphicsDeviceManager graphics)
         {
             _graphics = graphics;
-        }
-
-        public void Update()
-        {
-            // TODO: Possibly remove if not needed.
         }
 
         public void Draw(SpriteBatch _spriteBatch)

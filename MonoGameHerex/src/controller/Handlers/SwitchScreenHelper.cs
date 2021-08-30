@@ -12,8 +12,8 @@ namespace MonoGameHerex.Handlers
         }
         
         // Id list :
-        //      - 0 : Main Menu
-        //      - 1 : Game Screen
+        //      - 0 : Game Screen
+        //      - 1 : Main Menu
         public void SetView(int id)
         {
             ResetViews();
