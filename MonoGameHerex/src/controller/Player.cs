@@ -167,27 +167,61 @@ namespace MonoGameHerex
             CheckNeighbouringTiles(neighbours);
 
             #region checks for ground collisions
-            if (doesTypeCollideVert(neighbours, TileType.Ground))
-            {
-                pos.Y = neighbours["down"].CollisionRect.Top / (float) GameScreen.GridSize;
-                vel.Y = 0.0f;
-                onGround = true;
-            }
-            else
-            {
-                onGround = false;
-            }
             
-            if (doesTypeCollideLeft(neighbours, TileType.Ground))
+            if (neighbours["up"] != null && neighbours["down"] != null)
             {
-                vel.X = 0;
-                pos.X = (float) (neighbours["left"].CollisionRect.Right + GameScreen.GridSize / 2 + 2) / GameScreen.GridSize;
+                // Checks if colliding with floor.
+                if (neighbours["down"].Type == TileType.Ground)
+                {
+                    if (neighbours["down"].CollisionRect.Top - (Pos.Y * GameScreen.GridSize) < (vel.Y / velScaler) * GameScreen.GridSize)
+                    {
+                        pos.Y = neighbours["down"].CollisionRect.Top / (float) GameScreen.GridSize;
+                        vel.Y = 0.0f;
+                        onGround = true;
+                    }
+                    else
+                    {
+                        onGround = false;
+                    }
+                }
+                else
+                {
+                    onGround = false;
+                }
+                
+                // Checks if colliding with ceiling.
+                if (neighbours["up"].Type == TileType.Ground)
+                {
+                    if ((Pos.Y * GameScreen.GridSize - GameScreen.GridSize + 1) - neighbours["up"].CollisionRect.Bottom < (vel.Y / velScaler) * GameScreen.GridSize)
+                    {
+                        pos.Y = (float)(neighbours["down"].CollisionRect.Bottom - GameScreen.GridSize) / GameScreen.GridSize;
+                        vel.Y = 0.0f;
+                        
+                    }
+                }
             }
-            
-            if (doesTypeCollideRight(neighbours, TileType.Ground))
+
+            if (neighbours["left"] != null && neighbours["right"] != null)
             {
-                vel.X = 0;
-                pos.X = (float) (neighbours["right"].CollisionRect.Left - GameScreen.GridSize / 2 - 2) / GameScreen.GridSize;
+                // Checks if colliding with wall left
+                if (neighbours["left"].Type == TileType.Ground)
+                {
+                    if (neighbours["left"].CollisionRect.Right > Pos.X * GameScreen.GridSize - (float) GameScreen.GridSize / 2)
+                    {
+                        vel.X = 0;
+                        pos.X = (float) (neighbours["left"].CollisionRect.Right + GameScreen.GridSize / 2 + 2) / GameScreen.GridSize;
+                    }
+                }
+                
+                // Checks if colliding with wall right
+                if (neighbours["right"].Type == TileType.Ground)
+                {
+                    if (neighbours["right"].CollisionRect.Left < Pos.X * GameScreen.GridSize + (float) GameScreen.GridSize / 2)
+                    {
+                        vel.X = 0;
+                        pos.X = (float) (neighbours["right"].CollisionRect.Left - GameScreen.GridSize / 2 - 2) / GameScreen.GridSize;
+                    }
+                }
             }
             #endregion
 
@@ -197,81 +231,6 @@ namespace MonoGameHerex
                 points++;
                 _map.mapLayout[currentTile.GridPos.Y / GameScreen.GridSize, currentTile.GridPos.X / GameScreen.GridSize] = TileType.Air;
             }
-        }
-        
-        // Collection for the functions below. It checks if anything is colliding of a specified type from any side.
-        private bool doesTypeCollide(Dictionary<string, Tile> neighbours, TileType type)
-        {
-            if (doesTypeCollideVert(neighbours, type) || doesTypeCollideRight(neighbours, type) || doesTypeCollideLeft(neighbours, type))
-            {
-                return true;
-            }
-
-            return false;
-        }
-        // Checks if anything is colliding to the top or bottom of the player with the type specified. 
-        private bool doesTypeCollideVert(Dictionary<string, Tile> neighbours, TileType type)
-        {
-            bool doesCollide = false;
-            
-            if (neighbours["up"] != null && neighbours["down"] != null)
-            {
-                // Checks if colliding with floor.
-                if (neighbours["down"].Type == type)
-                {
-                    if (neighbours["down"].CollisionRect.Top - (Pos.Y * GameScreen.GridSize) < (vel.Y / velScaler) * GameScreen.GridSize)
-                    {
-                        doesCollide = true;
-                    }
-                }
-                
-                // Checks if colliding with ceiling.
-                if (neighbours["up"].Type == type)
-                {
-                    if ((Pos.Y * GameScreen.GridSize - GameScreen.GridSize + 1) - neighbours["up"].CollisionRect.Bottom < (vel.Y / velScaler) * GameScreen.GridSize)
-                    {
-                        doesCollide = true;
-                    }
-                }
-            }
-
-            return doesCollide;
-        }
-
-        // Checks if anything is colliding to the left of the player with the type specified. 
-        private bool doesTypeCollideLeft(Dictionary<string, Tile> neighbours, TileType type)
-        {
-            if (neighbours["left"] != null && neighbours["right"] != null)
-            {
-                // Checks if colliding with wall left
-                if (neighbours["left"].Type == type)
-                {
-                    if (neighbours["left"].CollisionRect.Right > Pos.X * GameScreen.GridSize - (float) GameScreen.GridSize / 2)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-        
-        // Checks if anything is colliding to the right of the player with the type specified. 
-        private bool doesTypeCollideRight(Dictionary<string, Tile> neighbours, TileType type)
-        {
-            if (neighbours["left"] != null && neighbours["right"] != null)
-            {
-                // Checks if colliding with wall right
-                if (neighbours["right"].Type == type)
-                {
-                    if (neighbours["right"].CollisionRect.Left < Pos.X * GameScreen.GridSize + (float) GameScreen.GridSize / 2)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         // Checks if player is on a particular tile.
