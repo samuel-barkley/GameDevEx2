@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Net.Mime;
-using System.Windows.Forms.VisualStyles;
+using System.Runtime.CompilerServices;
+using Apos.Gui;
+using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -28,7 +27,10 @@ namespace MonoGameHerex
 
         private Player player;
         private Map map;
+        private MainMenu mainMenu;
         
+        private IMGUI _ui; // Used for UI
+
         private Dictionary<string, Texture2D> textures;
         
         public Game1()
@@ -40,15 +42,26 @@ namespace MonoGameHerex
 
         protected override void Initialize()
         {
-            views = new List<IScreen> {new GameScreen(_graphics), new MainMenu(_graphics)};
+            _ui = new IMGUI();
+            views = new List<IScreen> {new GameScreen(_graphics, _ui), new MainMenuScreen(_graphics, _ui)};
             _switchScreenHelper = new SwitchScreenHelper(views);
             map = new Map();
+            mainMenu = new MainMenu(this, _ui);
+            
             base.Initialize();
         }
+
+        
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            FontSystem fontSystem = FontSystemFactory.Create(GraphicsDevice, 2048, 2048);
+            fontSystem.AddFont(TitleContainer.OpenStream($"{Content.RootDirectory}/font-file.ttf"));
+            GuiHelper.Setup(this, fontSystem);
+            
+            
             Texture2D brick = Content.Load<Texture2D>("Textures/Map/mario_brick");
             Texture2D coin = Content.Load<Texture2D>("Textures/Map/mario_coin");
             Texture2D doorClosed = Content.Load<Texture2D>("Textures/map/DoorClosed");
@@ -78,16 +91,11 @@ namespace MonoGameHerex
                 v.AddLvlData(mapData, map);
             }
         }
-
+        
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            foreach (var v in views)
-            {
-                v.Update();     // TODO: Not sure if views should be "updated" or just drawn. Maybe remove later.
-            }
 
             // Poll for current keyboard state.
             _prevState = _state;
@@ -99,7 +107,7 @@ namespace MonoGameHerex
             }
             else if (views[1].IsActive)
             {
-                UpdateMenu();
+                UpdateMenu(gameTime);
             }
             
             #region Manually switch screen with I.
@@ -128,7 +136,7 @@ namespace MonoGameHerex
             {
                 if (v.IsActive)
                 {
-                    v.Draw(_spriteBatch);
+                    v.Draw(_spriteBatch, gameTime);
                 }
             }
             _spriteBatch.End();
@@ -173,9 +181,10 @@ namespace MonoGameHerex
             player.Update(gameTime, _state, _prevState);
         }
 
-        private void UpdateMenu()
+        private void UpdateMenu(GameTime gameTime)
         {
-            
+            mainMenu.Update(gameTime);
         }
+        
     }
 }

@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin font-file.ttf
+/copy:font-file.ttf
+
 #begin MapData/map0.txt
 /copy:MapData/map0.txt
 

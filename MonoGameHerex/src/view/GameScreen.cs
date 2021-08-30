@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Apos.Gui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameHerex.Handlers;
@@ -11,7 +12,7 @@ namespace MonoGameHerex.src.view
     public class GameScreen : IScreen
     {
         public static int GridSize;
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = false;
         private GraphicsDeviceManager _graphics;
         private Dictionary<string, Texture2D> _textures;
         private int gridSize;
@@ -23,12 +24,16 @@ namespace MonoGameHerex.src.view
         // Makes the coins smaller than a "gridSize". 
         private int coinOffset = 3;
 
-        public GameScreen(GraphicsDeviceManager graphics)
+        private IMGUI ui;
+
+        public GameScreen(GraphicsDeviceManager graphics, IMGUI _ui)
         {
             _graphics = graphics;
             gridSize = GraphicsDeviceManager.DefaultBackBufferHeight / Map.gridCount.Y;
             GridSize = gridSize;
             SetLvl(0);
+
+            ui = _ui;
         }
 
         /*
@@ -96,7 +101,6 @@ namespace MonoGameHerex.src.view
         public void SetLvl(int id)
         {
             _currentLvl = id;
-            //_map = new Map(); // Todo: no need to instantiate new map here I think.
         }
 
         public void AddPlayer(Character player)

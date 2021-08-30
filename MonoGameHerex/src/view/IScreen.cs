@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameHerex.src.model;
 
@@ -13,7 +14,7 @@ namespace MonoGameHerex.src.view
         {
             // TODO: Remove if not needed.
         }
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch _spriteBatch, GameTime gameTime)
         {
             
         }
