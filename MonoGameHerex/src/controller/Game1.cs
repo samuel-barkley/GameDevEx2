@@ -50,6 +50,7 @@ namespace MonoGameHerex
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D brick = Content.Load<Texture2D>("Textures/Map/mario_brick");
+            Texture2D coin = Content.Load<Texture2D>("Textures/Map/mario_coin");
             Texture2D doorClosed = Content.Load<Texture2D>("Textures/map/DoorClosed");
             Texture2D doorOpen = Content.Load<Texture2D>("Textures/map/DoorOpen");
             Texture2D player_idle = Content.Load<Texture2D>("Textures/Characters/Player/Idle");
@@ -61,6 +62,7 @@ namespace MonoGameHerex
             
             textures = new Dictionary<string, Texture2D>();
             textures.Add("brick", brick);
+            textures.Add("coin", coin);
             textures.Add("doorClosed", doorClosed);
             textures.Add("doorOpen", doorOpen);
             textures.Add("player_idle", player_idle);
@@ -167,7 +169,7 @@ namespace MonoGameHerex
                 player = new Player(map);
                 views[0].AddPlayer(player);
             }
-            
+
             player.Update(gameTime, _state, _prevState);
         }
 

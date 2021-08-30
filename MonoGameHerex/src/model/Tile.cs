@@ -11,14 +11,14 @@ namespace MonoGameHerex.src.model
         private Point _gridPos;
         private Rectangle collisionRect;
         
-        public TileType Type => _type;
+        public TileType Type;
         public Point GridPos => _gridPos;
         public Rectangle CollisionRect => collisionRect;
 
         public Tile(Point pos, TileType type)
         {
             _gridPos = pos;
-            _type = type;
+            Type = type;
             collisionRect = new Rectangle(pos.X, pos.Y, GameScreen.GridSize, GameScreen.GridSize);
         }
     }

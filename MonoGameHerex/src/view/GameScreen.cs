@@ -20,6 +20,9 @@ namespace MonoGameHerex.src.view
         private Map _map;
         private Character _player;
 
+        // Makes the coins smaller than a "gridSize". 
+        private int coinOffset = 3;
+
         public GameScreen(GraphicsDeviceManager graphics)
         {
             _graphics = graphics;
@@ -47,8 +50,19 @@ namespace MonoGameHerex.src.view
                         case TileType.Ground:
                             _spriteBatch.Draw(_textures["brick"], new Rectangle(gridSize * j, gridSize * i, gridSize, gridSize), Color.White);
                             break;
+                        case TileType.Coin:
+                            _spriteBatch.Draw(_textures["coin"], new Rectangle(gridSize * j + coinOffset, gridSize * i + coinOffset, gridSize - coinOffset * 2, gridSize - coinOffset * 2), Color.White);
+                            break;
                         case TileType.End:
-                            _spriteBatch.Draw(_textures["doorClosed"], new Rectangle(gridSize * j, gridSize * (i - 1), gridSize, gridSize * 2), Color.White);
+                            if (Exit.isOpen)
+                            {
+                                _spriteBatch.Draw(_textures["doorOpen"], new Rectangle(gridSize * j, gridSize * (i - 1), gridSize, gridSize * 2), Color.White);
+                            }
+                            else
+                            {
+                                _spriteBatch.Draw(_textures["doorClosed"], new Rectangle(gridSize * j, gridSize * (i - 1), gridSize, gridSize * 2), Color.White);
+                            }
+                            
                             break;
                     }
                     
@@ -57,7 +71,7 @@ namespace MonoGameHerex.src.view
             
             // Draw Player
             if (_player != null)
-                _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2), (int) (_player.Pos.Y * gridSize - gridSize), gridSize, gridSize), Color.White);
+                _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2.0f), (int) (_player.Pos.Y * gridSize - gridSize), gridSize, gridSize), Color.White);
             
             DrawGrid(_spriteBatch);
         }
@@ -72,6 +86,11 @@ namespace MonoGameHerex.src.view
             _mapDataString = mapData;
             _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0], map); // TODO: Currently only one map load in.
             _map.addTiles(); // Notifies map to make list of tiles for collision detection.
+        }
+
+        public void UpdatelvlData(Map map)
+        {
+            _map = map; // Todo: remove if not necessary
         }
 
         public void SetLvl(int id)

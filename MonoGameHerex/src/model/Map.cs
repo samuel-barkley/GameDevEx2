@@ -9,6 +9,7 @@ namespace MonoGameHerex.src.model
         public static Point gridCount = new Point(20, 17);
         public TileType[,] mapLayout;
         public List<Tile> tiles;
+        public int coinCount;
 
         public Map()
         {
@@ -31,11 +32,16 @@ namespace MonoGameHerex.src.model
 
         public void addTiles()
         {
+            coinCount = 0;
             for (int i = 0; i < mapLayout.GetLength(0); i++)
             {
                 for (int j = 0; j < mapLayout.GetLength(1); j++)
                 {
                     tiles.Add(new Tile(new Point(j * GameScreen.GridSize, i * GameScreen.GridSize), mapLayout[i, j]));
+                    if (mapLayout[i, j] == TileType.Coin)
+                    {
+                        coinCount++;
+                    }
                 }
             }
         }
