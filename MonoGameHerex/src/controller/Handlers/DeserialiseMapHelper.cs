@@ -24,6 +24,9 @@ namespace MonoGameHerex.Handlers
                         case 'c':
                             resultMap.mapLayout[i, j] = TileType.Coin;
                             break;
+                        case 'e':
+                            resultMap.mapLayout[i, j] = TileType.Enemy;
+                            break;
                         case 's':
                             resultMap.mapLayout[i, j] = TileType.Start;
                             break;

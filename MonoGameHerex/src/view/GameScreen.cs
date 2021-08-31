@@ -77,7 +77,16 @@ namespace MonoGameHerex.src.view
             if (_player != null)
                 _spriteBatch.Draw(_textures["player_idle"], new Rectangle((int) (_player.Pos.X * gridSize - gridSize / 2.0f), (int) (_player.Pos.Y * gridSize - gridSize), gridSize, gridSize), Color.White);
             
-            DrawGrid(_spriteBatch);
+            // Draw Enemies
+            if (_map.enemies.Count != 0)
+            {
+                foreach (var enemy in _map.enemies)
+                {
+                    _spriteBatch.Draw(_textures["goomba"], new Rectangle((int) enemy.Pos.X * gridSize, (int) enemy.Pos.Y * gridSize, GridSize, GridSize), Color.White);
+                }
+            }
+            
+            //DrawGrid(_spriteBatch);
         }
 
         public void AddTextures(Dictionary<string, Texture2D> textures)
@@ -88,7 +97,7 @@ namespace MonoGameHerex.src.view
         public void AddLvlData(List<List<string>> mapData, Map map)
         {
             _mapDataString = mapData;
-            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[0], map); // TODO: Currently only one map load in.
+            _map = DeserialiseMapHelper.DeserialiseMap(_mapDataString[map.mapLvl], map);
             _map.addTiles(); // Notifies map to make list of tiles for collision detection.
         }
 

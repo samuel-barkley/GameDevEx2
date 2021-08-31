@@ -29,6 +29,7 @@ namespace MonoGameHerex
         private Player player;
         private Map map;
         private MainMenu mainMenu;
+        private int currentLvl = 0;
         
         private IMGUI _ui; // Used for UI
 
@@ -70,7 +71,7 @@ namespace MonoGameHerex
             Texture2D player_walk0 = Content.Load<Texture2D>("Textures/Characters/Player/Walk0");
             Texture2D player_walk1 = Content.Load<Texture2D>("Textures/Characters/Player/Walk1");
             Texture2D player_walk2 = Content.Load<Texture2D>("Textures/Characters/Player/Walk2");
-            
+            Texture2D goomba = Content.Load<Texture2D>("Textures/Characters/Enemy/Goomba");
             
             textures = new Dictionary<string, Texture2D>();
             textures.Add("brick", brick);
@@ -82,6 +83,7 @@ namespace MonoGameHerex
             textures.Add("player_walk_0", player_walk0);
             textures.Add("player_walk_1", player_walk1);
             textures.Add("player_walk_2", player_walk2);
+            textures.Add("goomba", goomba);
 
             LoadMaps();
         }
@@ -147,27 +149,35 @@ namespace MonoGameHerex
         {
             // Todo: Load in all maps, not just one.
             List<List<string>> mapGrids = new List<List<string>>();
-            string mapPath = "Content/MapData/map0.txt" /*string.Format("Content/levels/{0}.txt", 0)*/;
-
-            mapGrids = new List<List<string>>();
+            string[] mapPaths = {"Content/MapData/map0.txt", "Content/MapData/map1.txt"};
             
-            using (Stream fileStream = TitleContainer.OpenStream(mapPath))
+            mapGrids = new List<List<string>>();
+
+            int i = 0;
+            foreach (var path in mapPaths)
             {
-                mapGrids.Add(new List<string>()); // Adding the first map
-                using (StreamReader reader = new StreamReader(fileStream))
+                using (Stream fileStream = TitleContainer.OpenStream(path))
                 {
-                    string line = reader.ReadLine();
-                    
-                    while (line != null)
+                    mapGrids.Add(new List<string>()); // Adding the first map
+                    using (StreamReader reader = new StreamReader(fileStream))
                     {
-                        mapGrids[0].Add(line);      // Index = 0 because currently only loads in one map.
-                        line = reader.ReadLine();
+                        string line = reader.ReadLine();
+                    
+                        while (line != null)
+                        {
+                            mapGrids[i].Add(line);      // Index = 0 because currently only loads in one map.
+                            line = reader.ReadLine();
+                        }
                     }
                 }
+
+                i++;
             }
+            
 
             foreach (var v in views)
             {
+                map.mapLvl = currentLvl % 2;
                 v.AddTextures(textures);
                 v.AddLvlData(mapGrids, map);
             }
@@ -181,6 +191,14 @@ namespace MonoGameHerex
                 views[0].AddPlayer(player);
             }
 
+            if (map.enemyCount != 0)
+            {
+                foreach (var enemy in map.enemies)
+                {
+                    enemy.Update(gameTime, _state, _prevState);
+                }
+            }
+
             player.Update(gameTime, _state, _prevState);
             CheckEndState();
         }
@@ -189,9 +207,9 @@ namespace MonoGameHerex
         {
             if (player.MadeIt)
             {
+                currentLvl++;
                 Debug.WriteLine("Made it");
                 map = new Map();
-                //map.addTiles();
                 LoadMaps();
             }
         }
