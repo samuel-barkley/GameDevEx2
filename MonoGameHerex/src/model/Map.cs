@@ -54,7 +54,7 @@ namespace MonoGameHerex.src.model
                     if (mapLayout[i, j] == TileType.Enemy)
                     {
                         enemyCount++;
-                        Enemy enemy = new Enemy(new Vector2(j, i));
+                        Enemy enemy = new Enemy(new Vector2(j, i + 1), this);
                         enemies.Add(enemy);
                     }
                 }

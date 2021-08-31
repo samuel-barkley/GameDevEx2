@@ -7,7 +7,6 @@ namespace MonoGameHerex.src.model
     
     public class Tile
     {
-        private TileType _type;
         private Point _gridPos;
         private Rectangle collisionRect;
         

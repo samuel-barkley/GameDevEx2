@@ -82,11 +82,11 @@ namespace MonoGameHerex.src.view
             {
                 foreach (var enemy in _map.enemies)
                 {
-                    _spriteBatch.Draw(_textures["goomba"], new Rectangle((int) enemy.Pos.X * gridSize, (int) enemy.Pos.Y * gridSize, GridSize, GridSize), Color.White);
+                    _spriteBatch.Draw(_textures["goomba"], new Rectangle((int) (enemy.Pos.X * gridSize - gridSize / 2.0f), (int) (enemy.Pos.Y * gridSize - gridSize), GridSize, GridSize), Color.White);
                 }
             }
             
-            //DrawGrid(_spriteBatch);
+            DrawGrid(_spriteBatch);
         }
 
         public void AddTextures(Dictionary<string, Texture2D> textures)
