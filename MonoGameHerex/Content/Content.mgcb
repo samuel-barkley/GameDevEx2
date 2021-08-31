@@ -19,6 +19,12 @@
 #begin MapData/map0.txt
 /copy:MapData/map0.txt
 
+#begin MapData/map1.txt
+/copy:MapData/map1.txt
+
+#begin MapData/map2.txt
+/copy:MapData/map2.txt
+
 #begin Textures/Characters/Player/Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
