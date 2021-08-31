@@ -39,7 +39,7 @@ namespace MonoGameHerex.src.view
         /*
          * Draws everything relating to the actual gameplay screen. (all levels)
          */
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch _spriteBatch, GameTime gameTime)
         {
             _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
             
@@ -70,7 +70,6 @@ namespace MonoGameHerex.src.view
                             
                             break;
                     }
-                    
                 }
             }
             

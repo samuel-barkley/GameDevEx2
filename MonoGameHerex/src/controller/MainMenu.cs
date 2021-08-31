@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Apos.Gui;
 using FontStashSharp;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameHerex
 {
@@ -9,14 +10,16 @@ namespace MonoGameHerex
     public class MainMenu : IController
     {
         private IMGUI ui;
-        private Game gameInstance;  // this is needed if you want to shut down the game from within the main menu.
+        private Game1 gameInstance;  // this is needed if you want to shut down the game from within the main menu.
+        private GraphicsDeviceManager graphics;
 
         private bool showFun;
 
-        public MainMenu(Game game1, IMGUI _ui)
+        public MainMenu(Game1 game1, IMGUI _ui, GraphicsDeviceManager _graphics)
         {
             ui = _ui;
             gameInstance = game1;
+            graphics = _graphics;
         }
         
         public void Update(GameTime gameTime)
@@ -25,12 +28,11 @@ namespace MonoGameHerex
             ui.UpdateAll(gameTime);
 
             // Create your UI.
-            Panel.Push();
-            if (Button.Put("Show fun").Clicked) {
-                showFun = !showFun;
-            }
-            if (showFun) {
-                Label.Put("This is fun!");
+            Panel panel = Panel.Push();
+            panel.XY = new Vector2(graphics.PreferredBackBufferWidth / 2.0f - panel.FullWidth / 2.0f, graphics.PreferredBackBufferHeight / 2.0f - panel.FullHeight / 2.0f);
+            if (Button.Put("Start Game").Clicked)
+            {
+                gameInstance.startGame();
             }
             if (Button.Put("Quit").Clicked) {
                 gameInstance.Exit();

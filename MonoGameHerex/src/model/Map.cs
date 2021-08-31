@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using Microsoft.Xna.Framework;
 using MonoGameHerex.src.view;
 
@@ -16,6 +17,7 @@ namespace MonoGameHerex.src.model
             mapLayout = new TileType[gridCount.Y, gridCount.X];   // Map is 20 Tiles wide and 17 Tiles high
             tiles = new List<Tile>();
             setDefaultMap();
+            Exit.isOpen = false;
         }
 
         private void setDefaultMap()

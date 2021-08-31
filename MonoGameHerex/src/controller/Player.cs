@@ -40,6 +40,8 @@ namespace MonoGameHerex
         private Tile currentTile;
 
         public int points;
+        private int pointsCollectedThisLvl;
+        public bool MadeIt = false;
 
         public Player(Map map)
         {
@@ -59,8 +61,9 @@ namespace MonoGameHerex
 
             HandleGravity();
             HandleCollisions();
-
-            applyPosUpdates();
+            HandleExitPoint();
+            
+            ApplyPosUpdates();
         }
         
         private void setSpawnLocation()
@@ -71,6 +74,11 @@ namespace MonoGameHerex
                 {
                     pos.X = (float) tile.GridPos.X / GameScreen.GridSize;
                     pos.Y = (float) tile.GridPos.Y / GameScreen.GridSize;
+                }
+
+                if (tile.Type == TileType.Coin)
+                {
+                    { }
                 }
             }
         }
@@ -229,6 +237,7 @@ namespace MonoGameHerex
             if (isOnTile() == TileType.Coin)
             {
                 points++;
+                pointsCollectedThisLvl++;
                 _map.mapLayout[currentTile.GridPos.Y / GameScreen.GridSize, currentTile.GridPos.X / GameScreen.GridSize] = TileType.Air;
             }
         }
@@ -246,7 +255,10 @@ namespace MonoGameHerex
                     {
                         currentTile = tile;
                         TileType tileType = tile.Type;
-                        tile.Type = TileType.Air;
+                        if (tileType == TileType.Coin)
+                        {
+                            currentTile.Type = TileType.Air;
+                        }
                         return tileType;
                     }
                 }
@@ -300,13 +312,21 @@ namespace MonoGameHerex
             }
 
             // If there wasn't a coin, it opens the door.
-            if (_map.coinCount <= points)
+            if (_map.coinCount <= pointsCollectedThisLvl)
             {
                 Exit.isOpen = true;
             }
         }
 
-        private void applyPosUpdates()
+        private void HandleExitPoint()
+        {
+            if (isOnTile() == TileType.End && Exit.isOpen)
+            {
+                MadeIt = true;
+            }
+        }
+
+        private void ApplyPosUpdates()
         {
             pos.X += vel.X / velScaler;
             pos.Y += vel.Y / velScaler;

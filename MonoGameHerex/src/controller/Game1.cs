@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Apos.Gui;
@@ -46,12 +47,10 @@ namespace MonoGameHerex
             views = new List<IScreen> {new GameScreen(_graphics, _ui), new MainMenuScreen(_graphics, _ui)};
             _switchScreenHelper = new SwitchScreenHelper(views);
             map = new Map();
-            mainMenu = new MainMenu(this, _ui);
+            mainMenu = new MainMenu(this, _ui, _graphics);
             
             base.Initialize();
         }
-
-        
 
         protected override void LoadContent()
         {
@@ -83,13 +82,8 @@ namespace MonoGameHerex
             textures.Add("player_walk_0", player_walk0);
             textures.Add("player_walk_1", player_walk1);
             textures.Add("player_walk_2", player_walk2);
-            
-            List<List<string>> mapData = LoadMaps();
-            foreach (var v in views)
-            {
-                v.AddTextures(textures);
-                v.AddLvlData(mapData, map);
-            }
+
+            LoadMaps();
         }
         
         protected override void Update(GameTime gameTime)
@@ -144,7 +138,12 @@ namespace MonoGameHerex
             base.Draw(gameTime);
         }
 
-        private List<List<string>> LoadMaps()
+        public void startGame()
+        {
+            _switchScreenHelper.SetView(0);
+        }
+
+        private void LoadMaps()
         {
             // Todo: Load in all maps, not just one.
             List<List<string>> mapGrids = new List<List<string>>();
@@ -167,24 +166,39 @@ namespace MonoGameHerex
                 }
             }
 
-            return mapGrids;
+            foreach (var v in views)
+            {
+                v.AddTextures(textures);
+                v.AddLvlData(mapGrids, map);
+            }
         }
 
         private void UpdateGameplay(GameTime gameTime)
         {
-            if (player == null)
+            if (player == null || player.MadeIt)
             {
                 player = new Player(map);
                 views[0].AddPlayer(player);
             }
 
             player.Update(gameTime, _state, _prevState);
+            CheckEndState();
+        }
+
+        private void CheckEndState()
+        {
+            if (player.MadeIt)
+            {
+                Debug.WriteLine("Made it");
+                map = new Map();
+                //map.addTiles();
+                LoadMaps();
+            }
         }
 
         private void UpdateMenu(GameTime gameTime)
         {
             mainMenu.Update(gameTime);
         }
-        
     }
 }
