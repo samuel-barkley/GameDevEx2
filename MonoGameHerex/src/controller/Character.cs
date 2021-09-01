@@ -53,14 +53,20 @@ namespace MonoGameHerex
                     // First part of the statement lets all tiles through that are above the pos of the player. The second part lets the tiles through that are max 1 gridspace away from the pos.
                     if (tile.CollisionRect.Bottom < (Pos.Y * GameScreen.GridSize) /*uncomment to add head collision + GameScreen.GridSize*/ && tile.CollisionRect.Bottom > Pos.Y - GameScreen.GridSize /*Add another gridsize to add headcollision*/)
                     {
-                        // Gets top tile
-                        neighbours["up"] = tile;
+                        if (neighbours["up"] == null || neighbours["up"].Type != TileType.Ground)
+                        {
+                            // Gets top tile
+                            neighbours["up"] = tile;
+                        }
                     }
                     // First part of the statement lets all tiles through that are below the pos of the player. The second part lets the tiles through that are max 1 gridspace away from the pos.
                     if (tile.CollisionRect.Top >= Pos.Y * GameScreen.GridSize - 5 && tile.CollisionRect.Top < (Pos.Y * GameScreen.GridSize) + GameScreen.GridSize)
                     {
-                        // Gets bottom tile
-                        neighbours["down"] = tile;
+                        if (neighbours["down"] == null || neighbours["down"].Type != TileType.Ground)
+                        {
+                            // Gets bottom tile
+                            neighbours["down"] = tile;
+                        }
                     }
                 }
 
