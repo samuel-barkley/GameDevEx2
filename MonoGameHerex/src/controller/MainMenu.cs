@@ -30,6 +30,12 @@ namespace MonoGameHerex
             // Create your UI.
             Panel panel = Panel.Push();
             panel.XY = new Vector2(graphics.PreferredBackBufferWidth / 2.0f - panel.FullWidth / 2.0f, graphics.PreferredBackBufferHeight / 2.0f - panel.FullHeight / 2.0f);
+
+            if (gameInstance.player != null)
+            {
+                Label.Put("You died!");
+                Label.Put("You had " + (gameInstance.Points + gameInstance.player.points) + " points");
+            }
             if (Button.Put("Start Game").Clicked)
             {
                 gameInstance.startGame();

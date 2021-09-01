@@ -65,9 +65,10 @@ namespace MonoGameHerex.src.view
                             }
                             else
                             {
-                                _spriteBatch.Draw(_textures["doorClosed"], new Rectangle(gridSize * j, gridSize * (i - 1), gridSize, gridSize * 2), Color.White);
+                                _spriteBatch.Draw(_textures["doorClosed"],
+                                    new Rectangle(gridSize * j, gridSize * (i - 1), gridSize, gridSize * 2),
+                                    Color.White);
                             }
-                            
                             break;
                     }
                 }

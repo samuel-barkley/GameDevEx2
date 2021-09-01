@@ -38,7 +38,8 @@ namespace MonoGameHerex
 
         public int points;
         private int pointsCollectedThisLvl;
-        public bool MadeIt = false;
+        public bool MadeIt;
+        public bool Alive = true;
 
         public Player(Map map)
         {
@@ -63,6 +64,17 @@ namespace MonoGameHerex
             ApplyPosUpdates();
         }
         
+        // This function is used to reset the player when restarting the game.
+        public void Reset(Map map)
+        {
+            _map = map;
+            setSpawnLocation();
+            Alive = true;
+            pointsCollectedThisLvl = 0;
+            points = 0;
+        }
+        
+        // Sets the location of the player at the start of the game to the correct tile.
         private void setSpawnLocation()
         {
             foreach (var tile in _map.tiles)
@@ -72,17 +84,12 @@ namespace MonoGameHerex
                     pos.X = (float) tile.GridPos.X / GameScreen.GridSize;
                     pos.Y = (float) tile.GridPos.Y / GameScreen.GridSize;
                 }
-
-                if (tile.Type == TileType.Coin)
-                {
-                    { }
-                }
             }
         }
 
+        // Sets what the player intentions are based on the keyboard input. To be acted on later.
         private void HandleInputState()
         {
-            
             if (_state.IsKeyDown(Keys.Space))
             {
                 if (!stopJump)
@@ -120,6 +127,7 @@ namespace MonoGameHerex
             }
         }
 
+        // Enacts basic movements based on keyboard state. This data can still be changed later by collisions etc...
         private void HandleMovement()
         {
             if (toMoveLeft)
@@ -133,11 +141,8 @@ namespace MonoGameHerex
             else
             {
                 vel.X = 0;
-            }
+            } 
             
-
-            // Debug.WriteLine("toMoveLeft: " + toMoveLeft + ", toMoveRight: " + toMoveRight);
-            // Debug.WriteLine("IsJump: " + toJump + ", onGround: " + onGround);
             if (toJump && onGround)
             {
                 vel.Y = jumpForce;
@@ -145,6 +150,7 @@ namespace MonoGameHerex
             }
         }
 
+        // Enacts gravity on the player.
         private void HandleGravity()
         {
             float g = 70f;
@@ -160,6 +166,7 @@ namespace MonoGameHerex
             }
         }
 
+        // Checks if the player is colliding with any solid blocks and changes the velocity accordingly.
         private void HandleCollisions()
         {
             double spriteOffset = 2;
@@ -241,11 +248,20 @@ namespace MonoGameHerex
             {
                 points++;
                 pointsCollectedThisLvl++;
-                _map.mapLayout[currentTile.GridPos.Y / GameScreen.GridSize, currentTile.GridPos.X / GameScreen.GridSize] = TileType.Air;
+                _map.mapLayout[currentTile.GridPos.Y / GameScreen.GridSize, currentTile.GridPos.X / GameScreen.GridSize] = TileType.TakenCoin;
+            }
+            
+            // Checks if colliding with enemies and stops the game. 
+            foreach (var enemy in _map.enemies)
+            {
+                if (Math.Abs(enemy.Pos.X - Pos.X) < 1 && Math.Abs(enemy.Pos.Y - Pos.Y) < 1)
+                {
+                    Alive = false;
+                }
             }
         }
 
-        // Checks if player is on a particular tile.
+        // Returns on which tile the player is on.
         private TileType isOnTile()
         {
             foreach (var tile in _map.tiles)
@@ -260,7 +276,7 @@ namespace MonoGameHerex
                         TileType tileType = tile.Type;
                         if (tileType == TileType.Coin)
                         {
-                            currentTile.Type = TileType.Air;
+                            currentTile.Type = TileType.TakenCoin;
                         }
                         return tileType;
                     }
@@ -272,7 +288,6 @@ namespace MonoGameHerex
         }
 
         // Populated the neighbours tile dictionary. This is used for collision detection.
-
         private void HandleExitPoint()
         {
             if (isOnTile() == TileType.End && Exit.isOpen)
@@ -280,7 +295,5 @@ namespace MonoGameHerex
                 MadeIt = true;
             }
         }
-
-        
     }
 }

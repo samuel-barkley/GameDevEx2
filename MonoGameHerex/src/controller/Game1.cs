@@ -26,10 +26,13 @@ namespace MonoGameHerex
         private KeyboardState _state;
         private KeyboardState _prevState;
 
-        private Player player;
+        public Player player;
         private Map map;
         private MainMenu mainMenu;
-        private int currentLvl = 0;
+        private int currentLvl;
+        public int Points;
+
+        private bool updateGamePlay = true;
         
         private IMGUI _ui; // Used for UI
 
@@ -142,6 +145,12 @@ namespace MonoGameHerex
 
         public void startGame()
         {
+            map = new Map();
+            Points = 0;
+            updateGamePlay = true;
+            LoadMaps();
+            if (player != null)
+                player.Reset(map);
             _switchScreenHelper.SetView(0);
         }
 
@@ -185,22 +194,31 @@ namespace MonoGameHerex
 
         private void UpdateGameplay(GameTime gameTime)
         {
-            if (player == null || player.MadeIt)
+            if (updateGamePlay)
             {
-                player = new Player(map);
-                views[0].AddPlayer(player);
-            }
-
-            if (map.enemyCount != 0)
-            {
-                foreach (var enemy in map.enemies)
+                if (player == null || player.MadeIt)
                 {
-                    enemy.Update(gameTime, _state, _prevState);
+                    player = new Player(map);
+                    views[0].AddPlayer(player);
                 }
-            }
 
-            player.Update(gameTime, _state, _prevState);
-            CheckEndState();
+                if (map.enemyCount != 0)
+                {
+                    foreach (var enemy in map.enemies)
+                    {
+                        enemy.Update(gameTime, _state, _prevState);
+                    }
+                }
+
+                player.Update(gameTime, _state, _prevState);
+                if (!player.Alive)
+                {
+                    updateGamePlay = false;
+                    currentLvl = 0;
+                    _switchScreenHelper.SetView(1);
+                }
+                CheckEndState();
+            }
         }
 
         private void CheckEndState()
@@ -209,6 +227,7 @@ namespace MonoGameHerex
             {
                 currentLvl++;
                 Debug.WriteLine("Made it");
+                Points += player.points;
                 map = new Map();
                 LoadMaps();
             }

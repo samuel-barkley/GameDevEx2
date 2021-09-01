@@ -3,7 +3,7 @@ using MonoGameHerex.src.view;
 
 namespace MonoGameHerex.src.model
 {
-    public enum TileType { Coin, Enemy, Start, End, Ground, Air}
+    public enum TileType { Coin, Enemy, Start, End, Ground, TakenCoin, Air}
     
     public class Tile
     {
