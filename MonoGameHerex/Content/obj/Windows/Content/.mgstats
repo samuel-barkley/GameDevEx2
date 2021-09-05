@@ -1,4 +1,0 @@
-Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/samue/Documents/AP/Year2/Sem1/GameDev/MonoGameHerex/MonoGameHerex/Content/MapData/map1.txt","C:\Users\samue\Documents\AP\Year2\Sem1\GameDev\MonoGameHerex\MonoGameHerex\Content\bin\Windows\Content\MapData/map1.txt","CopyItem","File",372,372,0.001326
-"C:/Users/samue/Documents/AP/Year2/Sem1/GameDev/MonoGameHerex/MonoGameHerex/Content/MapData/map2.txt","C:\Users\samue\Documents\AP\Year2\Sem1\GameDev\MonoGameHerex\MonoGameHerex\Content\bin\Windows\Content\MapData/map2.txt","CopyItem","File",372,372,0.0005162
-"C:/Users/samue/Documents/AP/Year2/Sem1/GameDev/MonoGameHerex/MonoGameHerex/Content/Textures/Characters/Enemy/goomba.png","C:/Users/samue/Documents/AP/Year2/Sem1/GameDev/MonoGameHerex/MonoGameHerex/Content/bin/Windows/Content/Textures/Characters/Enemy/goomba.xnb","TextureProcessor","Texture2DContent",805,103125,0.1026853
